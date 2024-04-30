@@ -1,32 +1,44 @@
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('registerBtn').addEventListener('click', function() {
-        validateForm();
+document.addEventListener("DOMContentLoaded", function() {
+    const form = document.getElementById("registrationForm");
+    const table = document.getElementById("userTable").getElementsByTagName('tbody')[0];
+
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+        
+        // Get form values
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const dob = document.getElementById("dob").value;
+        const terms = document.getElementById("terms").checked ? "Yes" : "No";
+
+        // Validate email address
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            alert("Invalid email address");
+            return;
+        }
+
+        // Calculate age
+        const today = new Date();
+        const birthDate = new Date(dob);
+        const age = today.getFullYear() - birthDate.getFullYear();
+        const m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+
+        // Check age limits
+        if (age < 18 || age > 55) {
+            alert("Age must be between 18 and 55");
+            return;
+        }
+
+        // Add entry to table
+        const newRow = table.insertRow();
+        newRow.innerHTML = `<td>${name}</td><td>${email}</td><td>${password}</td><td>${dob}</td><td>${terms}</td>`;
+
+        // Clear form
+        form.reset();
     });
 });
-
-function validateForm() {
-    var username = document.getElementById('username').value;
-    var email = document.getElementById('email').value;
-    var password = document.getElementById('password').value;
-
-    if (username === '' || email === '' || password === '') {
-        alert('Please fill in all fields');
-        return false;
-    }
-
-    // Simple email validation (checking for @ symbol)
-    if (email.indexOf('@') === -1) {
-        alert('Please enter a valid email address');
-        return false;
-    }
-
-    // Simple password length validation
-    if (password.length < 6) {
-        alert('Password must be at least 6 characters long');
-        return false;
-    }
-
-    // If all validations pass, you can submit the form or perform further actions
-    alert('Registration successful!');
-    // Here you can add code to submit the form or redirect to another page
-}
