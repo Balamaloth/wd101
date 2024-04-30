@@ -4,27 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Registration</title>
+    <link rel="stylesheet" href="styles.css"> <!-- If you have any external CSS -->
 </head>
 <body>
-    <h1>User Registration</h1>
-    
+    <h1>User Registration Form</h1>
     <form id="registrationForm">
         <label for="name">Name:</label>
-        <input type="text" id="name" required><br>
-
+        <input type="text" id="name" name="name" required><br>
+        
         <label for="email">Email:</label>
-        <input type="email" id="email" required><br>
-
+        <input type="email" id="email" name="email" required><br>
+        
         <label for="password">Password:</label>
-        <input type="password" id="password" required><br>
-
+        <input type="password" id="password" name="password" required><br>
+        
         <label for="dob">Date of Birth:</label>
-        <input type="date" id="dob" required><br>
-
+        <input type="date" id="dob" name="dob" required><br>
+        
         <label for="terms">Accepted terms?</label>
-        <input type="checkbox" id="terms" required><br>
-
-        <button type="submit">Register</button>
+        <input type="checkbox" id="terms" name="terms" required><br>
+        
+        <button type="submit">Submit</button>
     </form>
 
     <table id="userTable">
@@ -34,14 +34,14 @@
                 <th>Email</th>
                 <th>Password</th>
                 <th>Date of Birth</th>
-                <th>Accepted Terms?</th>
+                <th>Accepted terms?</th>
             </tr>
         </thead>
-        <tbody id="userList">
-            <!-- User entries will be added here -->
+        <tbody>
+            <!-- Entries will be added here dynamically -->
         </tbody>
     </table>
 
-    <script src="index.js"></script>
+    <script src="index.js"></script> <!-- Link to your JavaScript file -->
 </body>
 </html>
