@@ -1,44 +1,45 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const form = document.getElementById("registrationForm");
-    const table = document.getElementById("userTable").getElementsByTagName('tbody')[0];
+const form = document.getElementById('registration-form');
+const table = document.getElementById('user-table').getElementsByTagName('tbody')[0];
 
-    form.addEventListener("submit", function(event) {
-        event.preventDefault();
-        
-        // Get form values
-        const name = document.getElementById("name").value;
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
-        const dob = document.getElementById("dob").value;
-        const terms = document.getElementById("terms").checked ? "Yes" : "No";
+form.addEventListener('submit', function(event) {
+  event.preventDefault();
+  
+  const name = form.elements['name'].value;
+  const email = form.elements['email'].value;
+  const password = form.elements['password'].value;
+  const dob = form.elements['dob'].value;
+  const termsAccepted = form.elements['terms'].checked;
 
-        // Validate email address
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            alert("Invalid email address");
-            return;
-        }
+  if (!validateEmail(email)) {
+    alert('Please enter a valid email address.');
+    return;
+  }
 
-        // Calculate age
-        const today = new Date();
-        const birthDate = new Date(dob);
-        const age = today.getFullYear() - birthDate.getFullYear();
-        const m = today.getMonth() - birthDate.getMonth();
-        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-            age--;
-        }
+  const age = calculateAge(new Date(dob));
+  if (age < 18 || age > 55) {
+    alert('Age must be between 18 and 55 years.');
+    return;
+  }
 
-        // Check age limits
-        if (age < 18 || age > 55) {
-            alert("Age must be between 18 and 55");
-            return;
-        }
+  const newRow = table.insertRow();
+  newRow.innerHTML = `
+    <td>${name}</td>
+    <td>${email}</td>
+    <td>${password}</td>
+    <td>${dob}</td>
+    <td>${termsAccepted ? 'Yes' : 'No'}</td>
+  `;
 
-        // Add entry to table
-        const newRow = table.insertRow();
-        newRow.innerHTML = `<td>${name}</td><td>${email}</td><td>${password}</td><td>${dob}</td><td>${terms}</td>`;
-
-        // Clear form
-        form.reset();
-    });
+  form.reset();
 });
+
+function validateEmail(email) {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(email);
+}
+
+function calculateAge(birthday) { 
+  const ageDifferenceMs = Date.now() - birthday.getTime();
+  const ageDate = new Date(ageDifferenceMs);
+  return Math.abs(ageDate.getUTCFullYear() - 1970);
+}
