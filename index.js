@@ -1,45 +1,111 @@
-const form = document.getElementById('registration-form');
-const table = document.getElementById('user-table').getElementsByTagName('tbody')[0];
+// Function to validate email address
+function validateEmail(email) {
+  const re = /\S+@\S+\.\S+/;
+  return re.test(email);
+}
 
-form.addEventListener('submit', function(event) {
-  event.preventDefault();
-  
-  const name = form.elements['name'].value;
-  const email = form.elements['email'].value;
-  const password = form.elements['password'].value;
-  const dob = form.elements['dob'].value;
-  const termsAccepted = form.elements['terms'].checked;
+// Function to calculate age from date of birth
+function calculateAge(dob) {
+  const today = new Date();
+  const birthDate = new Date(dob);
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  return age;
+}
 
+// Function to handle form submission
+document.getElementById('registrationForm').addEventListener('submit', function(event) {
+  event.preventDefault(); // Prevent default form submission
+
+  // Retrieve form values
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  const dob = document.getElementById('dob').value;
+  const terms = document.getElementById('terms').checked;
+
+  // Validate name
+  const nameValidation = document.getElementById('nameValidation');
+  if (name.trim() === '') {
+    nameValidation.style.display = 'block';
+    return; // Stop submission if name is empty
+  } else {
+    nameValidation.style.display = 'none';
+  }
+
+  // Validate email
+  const emailValidation = document.getElementById('emailValidation');
   if (!validateEmail(email)) {
-    alert('Please enter a valid email address.');
-    return;
+    emailValidation.style.display = 'block';
+    return; // Stop submission if email is invalid
+  } else {
+    emailValidation.style.display = 'none';
   }
 
-  const age = calculateAge(new Date(dob));
+  // Validate password
+  const passwordValidation = document.getElementById('passwordValidation');
+  if (password.trim() === '') {
+    passwordValidation.style.display = 'block';
+    return; // Stop submission if password is empty
+  } else {
+    passwordValidation.style.display = 'none';
+  }
+
+  // Validate date of birth
+  const dobValidation = document.getElementById('dobValidation');
+  const age = calculateAge(dob);
   if (age < 18 || age > 55) {
-    alert('Age must be between 18 and 55 years.');
-    return;
+    dobValidation.style.display = 'block';
+    return; // Stop submission if age is invalid
+  } else {
+    dobValidation.style.display = 'none';
   }
 
-  const newRow = table.insertRow();
-  newRow.innerHTML = `
-    <td>${name}</td>
-    <td>${email}</td>
-    <td>${password}</td>
-    <td>${dob}</td>
-    <td>${termsAccepted ? 'Yes' : 'No'}</td>
+  // Create table row with user data
+  const newRow = `
+    <tr>
+      <td>${name}</td>
+      <td>${email}</td>
+      <td>${password}</td>
+      <td>${dob}</td>
+      <td>${terms ? 'Yes' : 'No'}</td>
+    </tr>
   `;
 
-  form.reset();
+  // Append new row to table
+  document.querySelector('#userTable tbody').insertAdjacentHTML('beforeend', newRow);
+
+  // Clear form fields
+  document.getElementById('registrationForm').reset();
+
+  // Save data to local storage
+  const userData = {
+    name: name,
+    email: email,
+    password: password,
+    dob: dob,
+    terms: terms
+  };
+  localStorage.setItem('userData', JSON.stringify(userData));
 });
 
-function validateEmail(email) {
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return regex.test(email);
-}
-
-function calculateAge(birthday) { 
-  const ageDifferenceMs = Date.now() - birthday.getTime();
-  const ageDate = new Date(ageDifferenceMs);
-  return Math.abs(ageDate.getUTCFullYear() - 1970);
-}
+// Load saved data from local storage on page load
+window.addEventListener('load', function() {
+  const userData = JSON.parse(localStorage.getItem('userData'));
+  if (userData) {
+    const { name, email, password, dob, terms } = userData;
+    const newRow = `
+      <tr>
+        <td>${name}</td>
+        <td>${email}</td>
+        <td>${password}</td>
+        <td>${dob}</td>
+        <td>${terms ? 'Yes' : 'No'}</td>
+      </tr>
+    `;
+    document.querySelector('#userTable tbody').insertAdjacentHTML('beforeend', newRow);
+  }
+});
