@@ -1,60 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>User Registration</title>
-<link rel="stylesheet" href="index.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Registration</title>
+  <style>
+    #registrationForm {
+      margin: 50px auto;
+      width: 400px;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    #registrationForm input {
+      margin-bottom: 10px;
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+    #userTable {
+      margin: 20px auto;
+      border-collapse: collapse;
+      width: 80%;
+    }
+    #userTable th, #userTable td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+  </style>
 </head>
 <body>
-
-<div class="container">
-  <h1> Registration Form</h1>
-
-  <form id="registrationForm" class="form">
-    <div class="form-group">
-      <label for="name">Name:</label>
-      <input type="text" id="name" name="name" class="input-field" required>
-    </div>
-    <div class="form-group">
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" class="input-field" required>
-    </div>
-    <div class="form-group">
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" class="input-field" required>
-    </div>
-    <div class="form-group">
-      <label for="dob">Date of Birth:</label>
-      <input type="date" id="dob" name="dob" class="input-field" required>
-    </div>
-    <div class="form-group">
-      <input type="checkbox" id="terms" name="terms" required>
-      <label for="terms">I accept the terms and conditions</label>
-    </div>
-    <button type="submit" class="submit-btn">Submit</button>
-  </form>
+  <div id="registrationForm">
+    <h2>User Registration</h2>
+    <form id="userForm">
+      <input type="text" id="name" placeholder="Name" required><br>
+      <input type="email" id="email" placeholder="Email" required><br>
+      <input type="password" id="password" placeholder="Password" required><br>
+      <input type="date" id="dob" placeholder="Date of Birth" required><br>
+      <input type="checkbox" id="acceptedTerms" required>
+      <label for="acceptedTerms">I accept the terms and conditions</label><br>
+      <button type="submit">Register</button>
+    </form>
+  </div>
 
   <table id="userTable">
     <thead>
       <tr>
-        <th>Name</th>    
-
+        <th>Name</th>
         <th>Email</th>
-
-        <th>Password</th>
-
-        <th>DOB</th>
-
-        <th>Accepted Terms?</th>
+        <th>Date of Birth</th>
       </tr>
     </thead>
-    <tbody>
-      <!-- Entries will be dynamically added here -->
-    </tbody>
+    <tbody id="userTableBody"></tbody>
   </table>
-</div>
 
-<script src="index.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const userForm = document.getElementById("userForm");
+      const userTableBody = document.getElementById("userTableBody");
+
+      userForm.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const dob = new Date(document.getElementById("dob").value);
+        const acceptedTerms = document.getElementById("acceptedTerms").checked;
+
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          alert("Invalid email address");
+          return;
+        }
+
+        // Validate age
+        const currentDate = new Date();
+        const minDate = new Date(currentDate.getFullYear() - 55, currentDate.getMonth(), currentDate.getDate());
+        const maxDate = new Date(currentDate.getFullYear() - 18, currentDate.getMonth(), currentDate.getDate());
+        if (dob < minDate || dob > maxDate) {
+          alert("Age must be between 18 and 55");
+          return;
+        }
+
+        // Add user to table
+        const newRow = document.createElement("tr");
+        newRow.innerHTML = `<td>${name}</td><td>${email}</td><td>${dob.toDateString()}</td>`;
+        userTableBody.appendChild(newRow);
+
+        // Clear form fields
+        userForm.reset();
+      });
+    });
+  </script>
 </body>
 </html>
