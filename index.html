@@ -1,99 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>User Registration</title>
-  <style>
-    #registrationForm {
-      margin: 50px auto;
-      width: 400px;
-      padding: 20px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    #registrationForm input {
-      margin-bottom: 10px;
-      width: 100%;
-      padding: 10px;
-      box-sizing: border-box;
-    }
-    #userTable {
-      margin: 20px auto;
-      border-collapse: collapse;
-      width: 80%;
-    }
-    #userTable th, #userTable td {
-      border: 1px solid #ccc;
-      padding: 8px;
-      text-align: left;
-    }
-  </style>
+    <title>Registration Form</title>
 </head>
-<body>
-  <div id="registrationForm">
-    <h2>User Registration</h2>
-    <form id="userForm">
-      <input type="text" id="name" placeholder="Name" required><br>
-      <input type="email" id="email" placeholder="Email" required><br>
-      <input type="password" id="password" placeholder="Password" required><br>
-      <input type="date" id="dob" placeholder="Date of Birth" required><br>
-      <input type="checkbox" id="acceptedTerms" required>
-      <label for="acceptedTerms">I accept the terms and conditions</label><br>
-      <button type="submit">Register</button>
-    </form>
-  </div>
-
-  <table id="userTable">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Date of Birth</th>
-      </tr>
-    </thead>
-    <tbody id="userTableBody"></tbody>
-  </table>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      const userForm = document.getElementById("userForm");
-      const userTableBody = document.getElementById("userTableBody");
-
-      userForm.addEventListener("submit", function(event) {
-        event.preventDefault();
-
-        const name = document.getElementById("name").value;
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
-        const dob = new Date(document.getElementById("dob").value);
-        const acceptedTerms = document.getElementById("acceptedTerms").checked;
-
-        // Validate email format
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-          alert("Invalid email address");
-          return;
-        }
-
-        // Validate age
-        const currentDate = new Date();
-        const minDate = new Date(currentDate.getFullYear() - 55, currentDate.getMonth(), currentDate.getDate());
-        const maxDate = new Date(currentDate.getFullYear() - 18, currentDate.getMonth(), currentDate.getDate());
-        if (dob < minDate || dob > maxDate) {
-          alert("Age must be between 18 and 55");
-          return;
-        }
-
-        // Add user to table
-        const newRow = document.createElement("tr");
-        newRow.innerHTML = `<td>${name}</td><td>${email}</td><td>${dob.toDateString()}</td>`;
-        userTableBody.appendChild(newRow);
-
-        // Clear form fields
-        userForm.reset();
-      });
-    });
-  </script>
+<body class="text-center">
+    <div class="container mx-auto max-w-lg">
+        <div class="bg-white px-6 pt-5 pb-5 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-lg sm:px-10">
+            <h2 class="text-3xl text-auto font-bold leading-tight text-center">Registration Form</h2>
+            <div class="divide-y divide-gray-300/50 space-y-6 py-8 text-base leading-7 text-gray-600">
+                <form id="user-form">
+                    <div class="mb-5">
+                        <label for="name" class="block text-md font-medium leading-5 text-gray-700">Name</label>
+                        <input required type="text" id="name" name="name" class="bg-gray-100 rounded-lg shadow-md px-4 py-3 text-base leading-6 placeholder-gray-500 focus:outline-none focus:ring-pink-500 focus:border-pink-500" placeholder="Enter full name">
+                    </div>
+                    <div class="mb-5">
+                        <label for="email" class="block text-md font-medium leading-5 text-gray-700">Email</label>
+                        <input required type="email" id="email" name="email" class="bg-gray-100 rounded-lg shadow-md px-4 py-3 text-base leading-6 placeholder-gray-500 focus:outline-none focus:ring-pink-500 focus:border-pink-500" placeholder="Enter email">
+                    </div>
+                    <div class="mb-5">
+                        <label for="password" class="block text-md font-medium leading-5 text-gray-700">Password</label>
+                        <input required type="password" id="password" name="password" class="bg-gray-100 rounded-lg shadow-md px-4 py-3 text-base leading-6 placeholder-gray-500 focus:outline-none focus:ring-pink-500 focus:border-pink-500" placeholder="Enter password">
+                    </div>
+                    <div class="mb-5">
+                        <label for="dob" class="block text-md font-medium leading-5 text-gray-700">Date Of Birth</label>
+                        <input required type="date" id="dob" name="dob" class="bg-gray-100 rounded-lg shadow-md px-4 py-3 text-base leading-6 placeholder-gray-500 focus:outline-none focus:ring-pink-500 focus:border-pink-500">
+                    </div>
+                    <div class="mb-5">
+                        <input type="checkbox" id="accept-terms" name="accept-terms" class="bg-green-100 rounded-lg shadow-md px-4 py-3 text-base leading-6 focus:outline-none focus:ring-pink-500 focus:border-pink-500">
+                        <label for="accept-terms" class="inline-block text-md font-medium leading-5 text-gray-700">Accept terms and conditions</label>
+                    </div>
+                    <button type="submit" class="w-full rounded-lg shadow-lg px-8 py-4 bg-green-500 text-white hover:bg-green-400 focus:outline-none focus:ring focus:ring-green-400 transition duration-200">Submit</button>
+                </form>
+            </div>
+        </div>
+        <div class="bg-white mt-5 pt-10 pb-8 shadow-xl rounded-lg">
+            <h2 class="text-3xl text-center font-bold leading-tight">Entries</h2>
+            <div class="divide-y divide-gray-300/5" id="user-entries"></div>
+        </div>
+    </div>
+    <script src="index.js"></script>
 </body>
 </html>
