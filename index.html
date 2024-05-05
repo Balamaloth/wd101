@@ -1,46 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registration form</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
 </head>
 <body>
-  <h2>Registration form</h2>
-  <form id="registrationForm">
-    <label for="name">Name:</label>
-    <input type="text" id="name" required placeholder="Enter full name"><br><br>
-    
-    <label for="email">Email:</label>
-    <input type="email" id="email" required placeholder="please Enter email"><br><br>
-    
-    <label for="password">Password:</label>
-    <input type="password" id="password" required placeholder="please enter password"><br><br>
-    
-    <label for="dob">Date of Birth:</label>
-    <input type="date" id="dob" required placeholder="please enter DOB"><br><br>
-    
-    <label for="terms">Accepted terms?</label>
-    <input type="checkbox" id="terms" required><br><br>
-    
-    
-    <button style="color: green;">submit</button>
-  </form>
+    <h1>Registration Form</h1>
+    <form id="registrationForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required placeholder="please enter full Name"><br><br>
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required placeholder="please enter valid Email"><br><br>
+        
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required placeholder="please Enter password"><br><br>
+        
+        <label for="dob">Date of Birth:</label>
+        <input type="date" id="dob" name="dob" required placeholder="Enter DOB"><br><br>
+        
+        <input type="checkbox" id="terms" name="terms" required>
+        <label for="terms">I accept the terms and conditions</label><br><br>
+        
+        <button style="color: green;" type="submit">Submit</button>
+    </form>
 
-  <table id="userTable">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Password</th>
-        <th>DOB</th>
-        <th>Accepted terms?</th>
-      </tr>
-    </thead>
-    <tbody id="userList">
-    </tbody>
-  </table>
+    <h2>Entries</h2>
+    <table id="entriesTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>password</th>
+                <th>dob</th>
+                <th>accept terms</th>
+            </tr>
+        </thead>
+        <tbody id="userList">
+            <!-- Entries will be dynamically added here -->
+        </tbody>
+    </table>
 
-  <script src="index.js"></script>
+    <script src="form.js"></script>
 </body>
 </html>
