@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const users = JSON.parse(localStorage.getItem('users')) || [];
   
     function addUserToTable(user) {
-      const userList = document.getElementById('userList');
+      const userList = document.getElementById('entriesTable').getElementsByTagName('tbody')[0];
       const newRow = userList.insertRow();
       newRow.innerHTML = `<td>${user.name}</td><td>${user.email}</td><td>${user.password}</td><td>${user.dob}</td><td>${user.acceptedTerms ? 'Yes' : 'No'}</td>`;
     }
@@ -64,5 +64,4 @@ document.addEventListener('DOMContentLoaded', function() {
   
     // Display existing users on page load
     users.forEach(addUserToTable);
-  });
-  
+});
