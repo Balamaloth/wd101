@@ -1,4 +1,19 @@
-document.getElementById('registrationForm').addEventListener('submit', function(event) {
+document.addEventListener('DOMContentLoaded', function() {
+  // Load existing users from localStorage if available
+  const users = JSON.parse(localStorage.getItem('users')) || [];
+
+  function addUserToTable(user) {
+    const userList = document.getElementById('userList');
+    const newRow = userList.insertRow();
+    newRow.innerHTML = `<td>${user.name}</td><td>${user.email}</td><td>${user.password}</td><td>${user.dob}</td><td>${user.acceptedTerms ? 'Yes' : 'No'}</td>`;
+  }
+
+  function saveUserToLocalStorage(user) {
+    users.push(user);
+    localStorage.setItem('users', JSON.stringify(users));
+  }
+
+  document.getElementById('registrationForm').addEventListener('submit', function(event) {
     event.preventDefault();
   
     const name = document.getElementById('name').value;
@@ -21,15 +36,15 @@ document.getElementById('registrationForm').addEventListener('submit', function(
       return;
     }
   
-    // Add user to table
-    const userList = document.getElementById('userList');
-    const newRow = userList.insertRow();
-    newRow.innerHTML = `<td>${name}</td><td>${email}</td><td>${password}</td><td>${dob}</td><td>${acceptedTerms ? 'Yes' : 'No'}</td>`;
-    
+    const newUser = { name, email, password, dob, acceptedTerms };
+  
+    addUserToTable(newUser);
+    saveUserToLocalStorage(newUser);
+  
     // Clear form fields
     document.getElementById('registrationForm').reset();
   });
-  
+
   // Function to check if email is valid
   function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -46,4 +61,7 @@ document.getElementById('registrationForm').addEventListener('submit', function(
     }
     return age;
   }
-  
+
+  // Display existing users on page load
+  users.forEach(addUserToTable);
+});
