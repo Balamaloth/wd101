@@ -1,67 +1,78 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Load existing users from localStorage if available
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-  
-    function addUserToTable(user) {
-      const userList = document.getElementById('entriesTable').getElementsByTagName('tbody')[0];
-      const newRow = userList.insertRow();
-      newRow.innerHTML = `<td>${user.name}</td><td>${user.email}</td><td>${user.password}</td><td>${user.dob}</td><td>${user.acceptedTerms ? 'Yes' : 'No'}</td>`;
-    }
-  
-    function saveUserToLocalStorage(user) {
-      users.push(user);
-      localStorage.setItem('users', JSON.stringify(users));
-    }
-  
-    document.getElementById('registrationForm').addEventListener('submit', function(event) {
-      event.preventDefault();
-    
-      const name = document.getElementById('name').value;
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      const dob = document.getElementById('dob').value;
-      const acceptedTerms = document.getElementById('terms').checked;
-    
-      // Check if email is valid
-      if (!isValidEmail(email)) {
-        alert('Please enter a valid email address.');
-        return;
-      }
-    
-      // Check if age is between 18 and 55
-      const dobDate = new Date(dob);
-      const age = calculateAge(dobDate);
-      if (age < 18 || age > 55) {
-        alert('You must be between 18 and 55 years old to register.');
-        return;
-      }
-    
-      const newUser = { name, email, password, dob, acceptedTerms };
-    
-      addUserToTable(newUser);
-      saveUserToLocalStorage(newUser);
-    
-      // Clear form fields
-      document.getElementById('registrationForm').reset();
-    });
-  
-    // Function to check if email is valid
-    function isValidEmail(email) {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return emailRegex.test(email);
-    }
-    
-    // Function to calculate age from date of birth
-    function calculateAge(dob) {
-      const today = new Date();
-      let age = today.getFullYear() - dob.getFullYear();
-      const monthDiff = today.getMonth() - dob.getMonth();
-      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
-        age--;
-      }
-      return age;
-    }
-  
-    // Display existing users on page load
-    users.forEach(addUserToTable);
+const form = document.getElementById('registrationForm');
+const tableBody = document.getElementById('entries');
+
+form.addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  const dob = document.getElementById('dob').value;
+  const terms = document.getElementById('terms').checked;
+
+  if (!isValidEmail(email)) {
+    alert('Invalid email address');
+    return;
+  }
+
+  const age = calculateAge(dob);
+  if (age < 18 || age > 55) {
+    alert('You must be between 18 and 55 years old to register');
+    return;
+  }
+
+  const entry = document.createElement('tr');
+  entry.innerHTML = `
+    <td>${name}</td>
+    <td>${email}</td>
+    <td>${password}</td>
+    <td>${dob}</td>
+    <td>${terms ? 'Yes' : 'No'}</td>
+  `;
+  tableBody.appendChild(entry);
+
+  // Store data in local storage
+  const userData = {
+    name,
+    email,
+    password,
+    dob,
+    terms
+  };
+  localStorage.setItem(email, JSON.stringify(userData));
+
+  form.reset();
 });
+
+// Load existing entries from local storage on page load
+window.addEventListener('load', function() {
+  for (let i = 0; i < localStorage.length; i++) {
+    const email = localStorage.key(i);
+    const userData = JSON.parse(localStorage.getItem(email));
+    const entry = document.createElement('tr');
+    entry.innerHTML = `
+      <td>${userData.name}</td>
+      <td>${userData.email}</td>
+      <td>${userData.password}</td>
+      <td>${userData.dob}</td>
+      <td>${userData.terms ? 'Yes' : 'No'}</td>
+    `;
+    tableBody.appendChild(entry);
+  }
+});
+
+function isValidEmail(email) {
+  const regex = /\S+@\S+\.\S+/;
+  return regex.test(email);
+}
+
+function calculateAge(dob) {
+  const today = new Date();
+  const birthDate = new Date(dob);
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  return age;
+}
