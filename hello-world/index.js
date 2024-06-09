@@ -3,8 +3,3 @@ const hello = () => {
   };
   
   hello();
-  console.log("hello world");
-  console.log("bala maloth");
-
-  console.log("20");
-  

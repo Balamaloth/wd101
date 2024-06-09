@@ -1,0 +1,14 @@
+{
+  "name": "http-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js --port 3000"
+  },
+  "dependencies": {
+    "minimist": "^1.2.5"
+  },
+  "author": "",
+  "license": "ISC"
+}
