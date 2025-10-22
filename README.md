@@ -15,11 +15,11 @@ A beginner-friendly, responsive, and fully-functional registration form made usi
 
 <h2> ## 📌 Features</h2>
 
-✅ Simple and clean UI
-✅ Input validation (e.g. email, date of birth)
-✅ Responsive design for mobile and desktop
-✅ Submit button with interactive behavior
-✅ Easy to extend for other form projects
+✅ Simple and clean UI <BR>
+✅ Input validation (e.g. email, date of birth) <br>
+✅ Responsive design for mobile and desktop <br>
+✅ Submit button with interactive behavior <br>
+✅ Easy to extend for other form projects <br>
 
 ---
 
